@@ -1,3 +1,3 @@
 {
-    "files": ["mainwindow.py","ui/mainwindow.ui"]
+    "files": ["mainwindow.py","ui/mainwindow.ui","resources.qrc"]
 }

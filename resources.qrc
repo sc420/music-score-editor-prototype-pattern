@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/toolbar">
+        <file>icons/outline_rotate_right_black_48dp.png</file>
+    </qresource>
+</RCC>

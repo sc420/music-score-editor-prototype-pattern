@@ -12,12 +12,18 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+import resources_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
         MainWindow.resize(800, 600)
+        self.actionRotateRight = QAction(MainWindow)
+        self.actionRotateRight.setObjectName(u"actionRotateRight")
+        icon = QIcon()
+        icon.addFile(u":/toolbar/icons/outline_rotate_right_black_48dp.png", QSize(), QIcon.Normal, QIcon.Off)
+        self.actionRotateRight.setIcon(icon)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout = QVBoxLayout(self.centralwidget)
@@ -43,6 +49,12 @@ class Ui_MainWindow(object):
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
+        self.toolBar = QToolBar(MainWindow)
+        self.toolBar.setObjectName(u"toolBar")
+        MainWindow.addToolBar(Qt.TopToolBarArea, self.toolBar)
+
+        self.toolBar.addAction(self.actionRotateRight)
+        self.toolBar.addSeparator()
 
         self.retranslateUi(MainWindow)
 
@@ -51,5 +63,10 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        self.actionRotateRight.setText(QCoreApplication.translate("MainWindow", u"Rotate Right", None))
+#if QT_CONFIG(tooltip)
+        self.actionRotateRight.setToolTip(QCoreApplication.translate("MainWindow", u"Rotate Right", None))
+#endif // QT_CONFIG(tooltip)
+        self.toolBar.setWindowTitle(QCoreApplication.translate("MainWindow", u"toolBar", None))
     # retranslateUi
 

@@ -39,6 +39,10 @@ The installation process should be the same for both Windows and Linux.
     ```bash
     pyside2-uic -o ui/mainwindow.py ui/mainwindow.ui
     ```
+3. Generate Python files from `.qrc` files
+    ```bash
+    pyside2-rcc -o resources_rc.py resources.qrc
+    ```
 
 ### Run Main GUI
 
