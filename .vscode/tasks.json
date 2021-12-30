@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "python: mainwindow.py",
+      "type": "shell",
+      "windows": {
+        "command": "~/AppData/Local/Continuum/miniconda3/envs/pyside2/python.exe",
+      },
+      "args": ["mainwindow.py"],
+      "problemMatcher": [],
+    },
+    {
+      "label": "pyside2-uic: Generate Python Files",
+      "type": "shell",
+      "windows": {
+        "command": "~/AppData/Local/Continuum/miniconda3/envs/pyside2/Scripts/pyside2-uic.exe",
+      },
+      "args": ["-o", "ui/mainwindow.py", "ui/mainwindow.ui"],
+      "problemMatcher": []
+    },
+  ]
+}
