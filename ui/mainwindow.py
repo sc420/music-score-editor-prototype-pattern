@@ -33,10 +33,22 @@ class Ui_MainWindow(object):
         self.splitter.setOrientation(Qt.Horizontal)
         self.listView = QListView(self.splitter)
         self.listView.setObjectName(u"listView")
+        self.listView.setMinimumSize(QSize(100, 300))
+        self.listView.setEditTriggers(QAbstractItemView.NoEditTriggers)
+        self.listView.setDragEnabled(True)
+        self.listView.setDragDropMode(QAbstractItemView.DragOnly)
+        self.listView.setIconSize(QSize(64, 64))
+        self.listView.setSpacing(10)
+        self.listView.setUniformItemSizes(True)
         self.splitter.addWidget(self.listView)
         self.graphicsView = QGraphicsView(self.splitter)
         self.graphicsView.setObjectName(u"graphicsView")
-        self.graphicsView.setMinimumSize(QSize(600, 0))
+        sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(5)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.graphicsView.sizePolicy().hasHeightForWidth())
+        self.graphicsView.setSizePolicy(sizePolicy)
+        self.graphicsView.setMinimumSize(QSize(300, 300))
         self.splitter.addWidget(self.graphicsView)
 
         self.verticalLayout.addWidget(self.splitter)
@@ -54,7 +66,6 @@ class Ui_MainWindow(object):
         MainWindow.addToolBar(Qt.TopToolBarArea, self.toolBar)
 
         self.toolBar.addAction(self.actionRotateRight)
-        self.toolBar.addSeparator()
 
         self.retranslateUi(MainWindow)
 

@@ -1,10 +1,11 @@
 import sys
 
+from PySide2.QtCore import QSize
 from PySide2.QtWidgets import QApplication, QMainWindow
+from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon
 from PySide2 import QtCore, QtGui, QtWidgets
 
 from ui.mainwindow import Ui_MainWindow
-
 
 # Reference: https://stackoverflow.com/questions/46999042/select-items-in-qgraphicsscene-using-pyside
 class Line(QtWidgets.QGraphicsLineItem):
@@ -29,6 +30,38 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        self.init_list_view()
+        self.init_graphics_view()
+
+    def init_list_view(self):
+        self.list_model = QStandardItemModel(self.ui.listView)
+
+        items = [
+            {
+                "icon": u":/toolkit/icons/staff.png",
+                "text": "Staff"
+            },
+            {
+                "icon": u":/graphics_view/icons/half_note.svg",
+                "text": "Half Note"
+            },
+            {
+                "icon": u":/graphics_view/icons/whole_note.svg",
+                "text": "Whole Note"
+            }
+        ]
+
+        for item in items:
+            icon = QIcon(item["icon"])
+            item = QStandardItem(icon, item["text"])
+
+            # Add the item to the model
+            self.list_model.appendRow(item)
+
+        # Apply the model to the list view
+        self.ui.listView.setModel(self.list_model)
+
+    def init_graphics_view(self):
         self.scene = QtWidgets.QGraphicsScene()
         self.ui.graphicsView.setScene(self.scene)
 

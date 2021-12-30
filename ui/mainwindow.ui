@@ -20,12 +20,46 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QListView" name="listView"/>
-      <widget class="QGraphicsView" name="graphicsView">
+      <widget class="QListView" name="listView">
        <property name="minimumSize">
         <size>
-         <width>600</width>
-         <height>0</height>
+         <width>100</width>
+         <height>300</height>
+        </size>
+       </property>
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="dragEnabled">
+        <bool>true</bool>
+       </property>
+       <property name="dragDropMode">
+        <enum>QAbstractItemView::DragOnly</enum>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
+       </property>
+       <property name="spacing">
+        <number>10</number>
+       </property>
+       <property name="uniformItemSizes">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QGraphicsView" name="graphicsView">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+         <horstretch>5</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>300</width>
+         <height>300</height>
         </size>
        </property>
       </widget>
@@ -55,11 +89,10 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionRotateRight"/>
-   <addaction name="separator"/>
   </widget>
   <action name="actionRotateRight">
    <property name="icon">
-    <iconset resource="../resources/resources.qrc">
+    <iconset resource="../resources.qrc">
      <normaloff>:/toolbar/icons/outline_rotate_right_black_48dp.png</normaloff>:/toolbar/icons/outline_rotate_right_black_48dp.png</iconset>
    </property>
    <property name="text">
@@ -71,7 +104,7 @@
   </action>
  </widget>
  <resources>
-  <include location="../resources/resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections/>
 </ui>

@@ -2,4 +2,12 @@
     <qresource prefix="/toolbar">
         <file>icons/outline_rotate_right_black_48dp.png</file>
     </qresource>
+    <qresource prefix="/toolkit">
+        <file>icons/staff.png</file>
+    </qresource>
+    <qresource prefix="/graphics_view">
+        <file>icons/G-clef.svg</file>
+        <file>icons/half_note.svg</file>
+        <file>icons/whole_note.svg</file>
+    </qresource>
 </RCC>
