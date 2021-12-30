@@ -12,6 +12,8 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
+from components.graphics_view import GraphicsView
+
 import resources_rc
 
 class Ui_MainWindow(object):
@@ -41,7 +43,7 @@ class Ui_MainWindow(object):
         self.listView.setSpacing(10)
         self.listView.setUniformItemSizes(True)
         self.splitter.addWidget(self.listView)
-        self.graphicsView = QGraphicsView(self.splitter)
+        self.graphicsView = GraphicsView(self.splitter)
         self.graphicsView.setObjectName(u"graphicsView")
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(5)

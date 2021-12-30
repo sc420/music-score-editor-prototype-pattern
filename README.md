@@ -26,6 +26,10 @@ The installation process should be the same for both Windows and Linux.
     ```bash
     pip install PySide2
     ```
+4. Install the project
+    ```bash
+    pip install -e .
+    ```
 
 ## Run
 
@@ -37,11 +41,11 @@ The installation process should be the same for both Windows and Linux.
     ```
 2. Generate Python files from `.ui` files
     ```bash
-    pyside2-uic -o ui/mainwindow.py ui/mainwindow.ui
+    pyside2-uic -o src/ui/mainwindow.py src/ui/mainwindow.ui
     ```
 3. Generate Python files from `.qrc` files
     ```bash
-    pyside2-rcc -o resources_rc.py resources.qrc
+    pyside2-rcc -o src/resources_rc.py src/resources.qrc
     ```
 
 ### Run Main GUI
@@ -52,5 +56,5 @@ The installation process should be the same for both Windows and Linux.
     ```
 1. Run `mainwindow.py`
     ```bash
-    python mainwindow.py
+    python src/mainwindow.py
     ```

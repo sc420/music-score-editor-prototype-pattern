@@ -7,7 +7,7 @@
       "windows": {
         "command": "~/AppData/Local/Continuum/miniconda3/envs/pyside2/python.exe",
       },
-      "args": ["mainwindow.py"],
+      "args": ["src/mainwindow.py"],
       "problemMatcher": [],
     },
     {
@@ -16,7 +16,7 @@
       "windows": {
         "command": "~/AppData/Local/Continuum/miniconda3/envs/pyside2/Scripts/pyside2-uic.exe",
       },
-      "args": ["-o", "ui/mainwindow.py", "ui/mainwindow.ui"],
+      "args": ["-o", "src/ui/mainwindow.py", "src/ui/mainwindow.ui"],
       "problemMatcher": []
     },
     {
@@ -25,7 +25,7 @@
       "windows": {
         "command": "~/AppData/Local/Continuum/miniconda3/envs/pyside2/Scripts/pyside2-rcc.exe",
       },
-      "args": ["-o", "resources_rc.py", "resources.qrc"],
+      "args": ["-o", "src/resources_rc.py", "src/resources.qrc"],
       "problemMatcher": []
     },
   ]
