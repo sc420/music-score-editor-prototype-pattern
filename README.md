@@ -60,13 +60,7 @@ The installation process should be the same for both Windows and Linux.
     conda activate pyside2
     ```
 
-3. Install PySide2 in the `pyside2` conda environment
-
-    ```bash
-    pip install PySide2
-    ```
-
-4. Install the project
+3. Install the project
 
     ```bash
     pip install -e .
