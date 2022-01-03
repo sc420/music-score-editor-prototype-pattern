@@ -15,27 +15,28 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
         # Reference: https://gist.github.com/benjaminirving/f45de3bbabbcacd3ca29
         items = self.parse_mime_data(event.mimeData())
         if items:
-            event.accept()
-        else:
-            event.ignore()
+            event.acceptProposedAction()
+
+    def dragLeaveEvent(self, event: QtGui.QDragLeaveEvent):
+        """
+        Does nothing but can disable the Qt warning
+        "QGraphicsView::dragLeaveEvent: drag leave received before drag enter".
+        """
+        pass
 
     def dragMoveEvent(self, event: QtGui.QDragMoveEvent):
         items = self.parse_mime_data(event.mimeData())
         if items:
-            event.accept()
-        else:
-            event.ignore()
+            event.acceptProposedAction()
 
     def dropEvent(self, event: QtGui.QDropEvent):
         items = self.parse_mime_data(event.mimeData())
         if items:
-            event.accept()
+            event.acceptProposedAction()
 
             pos = event.pos()
             scene_pos = self.mapToScene(pos.x(), pos.y())
             self.add_items(items, scene_pos)
-        else:
-            event.ignore()
 
     def resizeEvent(self, event: QtGui.QResizeEvent):
         super().resizeEvent(event)
