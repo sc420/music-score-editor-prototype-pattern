@@ -1,6 +1,6 @@
 # Music Score Editor (Prototype Pattern Demo)
 
-(TODO: Add gif here)
+![Demo](screenshots/demo.gif)
 
 A PySide2 implementation of the prototype pattern example in the book
 [Design Patterns: Elements of Reusable Object-Oriented Software](https://books.google.com.tw/books?id=6oHuKQe3TjQC).
