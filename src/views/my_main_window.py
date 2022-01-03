@@ -57,8 +57,8 @@ class MyMainWindow(QtWidgets.QMainWindow):
         self.scene = QtWidgets.QGraphicsScene(self)
         self.ui.graphicsView.setScene(self.scene)
 
-        self.scene.addItem(Line(25, 25, 25, 50))
-        self.scene.addItem(Line(30, 30, 30, 70))
-        self.scene.addItem(Line(35, 40, 35, 65))
+        # self.scene.addItem(Line(25, 25, 25, 50))
+        # self.scene.addItem(Line(30, 30, 30, 70))
+        # self.scene.addItem(Line(35, 40, 35, 65))
 
         self.scene.setSceneRect(self.ui.graphicsView.frameGeometry())

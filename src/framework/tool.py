@@ -19,7 +19,6 @@ class GraphicTools(Tool):
 
     def add_item(self, pos: QtCore.QPointF):
         new_graphic = self.prototype_graphic.clone()
-        item = new_graphic.get_item()
-        translated_pos = pos + new_graphic.get_translation()
-        item.setPos(translated_pos)
-        self.scene.addItem(item)
+        translated_pos = pos - new_graphic.get_snap_point_translation()
+        new_graphic.setPos(translated_pos)
+        self.scene.addItem(new_graphic)
