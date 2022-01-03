@@ -2,7 +2,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 
 
 class MyListView(QtWidgets.QListView):
-    def startDrag(self, supportedActions):
+    def startDrag(self, supportedActions: QtCore.Qt.DropActions):
         # Disable the icon while dragging
         # Reference: https://stackoverflow.com/a/25433268
         listsQModelIndex = self.selectedIndexes()

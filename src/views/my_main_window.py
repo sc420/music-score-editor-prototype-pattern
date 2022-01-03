@@ -1,32 +1,13 @@
-from PySide2.QtCore import QMimeData
-from PySide2.QtGui import QStandardItemModel, QStandardItem, QIcon
 from PySide2 import QtCore, QtGui, QtWidgets
-
-from ui.mainwindow import Ui_MainWindow
 
 from app.toolkit import TOOLKIT_ITEMS
 
-
-# Reference: https://stackoverflow.com/questions/46999042/select-items-in-qgraphicsscene-using-pyside
-class Line(QtWidgets.QGraphicsLineItem):
-    def __init__(self, x1, y1, x2, y2, parent=None):
-        super().__init__(x1, y1, x2, y2, parent)
-        self.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, True)
-        self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, True)
-        self.setPen(QtGui.QPen(QtCore.Qt.black, 3))
-
-    def mousePressEvent(self, e):
-        self.setPen(QtGui.QPen(QtCore.Qt.red, 5))
-        QtWidgets.QGraphicsLineItem.mousePressEvent(self, e)
-
-    def mouseReleaseEvent(self, e):
-        self.setPen(QtGui.QPen(QtCore.Qt.black, 3))
-        QtWidgets.QGraphicsLineItem.mouseReleaseEvent(self, e)
+from ui.mainwindow import Ui_MainWindow
 
 
-class ToolkitItemModel(QStandardItemModel):
+class ToolkitItemModel(QtGui.QStandardItemModel):
     def mimeData(self, indexes):
-        mime_data = QMimeData()
+        mime_data = QtCore.QMimeData()
         urls = [TOOLKIT_ITEMS[index.row()]['mimeData'] for index in indexes]
         mime_data.setUrls(urls)
         return mime_data
@@ -50,8 +31,8 @@ class MyMainWindow(QtWidgets.QMainWindow):
         self.list_model = ToolkitItemModel(self.ui.listView)
 
         for item in TOOLKIT_ITEMS:
-            icon = QIcon(item['icon'])
-            item = QStandardItem(icon, item['text'])
+            icon = QtGui.QIcon(item['icon'])
+            item = QtGui.QStandardItem(icon, item['text'])
 
             # Add the item to the model
             self.list_model.appendRow(item)
@@ -61,12 +42,6 @@ class MyMainWindow(QtWidgets.QMainWindow):
 
     def init_graphics_view(self):
         self.ui.graphicsView.setScene(self.scene)
-
-        # self.scene.addItem(Line(25, 25, 25, 50))
-        # self.scene.addItem(Line(30, 30, 30, 70))
-        # self.scene.addItem(Line(35, 40, 35, 65))
-
-        self.scene.setSceneRect(self.ui.graphicsView.frameGeometry())
 
     def connect_toolbar_actions_signals(self):
         self.ui.actionRotateRight.triggered.connect(

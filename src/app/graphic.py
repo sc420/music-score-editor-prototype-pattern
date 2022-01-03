@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List
+from typing import Any, List
 import math
 
 from PySide2 import QtCore, QtSvg, QtWidgets
@@ -15,7 +15,7 @@ class Graphic(QtWidgets.QGraphicsItemGroup):
 
     def itemChange(self,
                    change: QtWidgets.QGraphicsItem.GraphicsItemChange,
-                   value):
+                   value: Any):
         # Reference: https://www.walletfox.com/course/qgraphicsitemsnaptogrid.php
         if (change == QtWidgets.QGraphicsItem.ItemPositionChange
                 and self.scene()):
@@ -38,7 +38,7 @@ class Graphic(QtWidgets.QGraphicsItemGroup):
     def init_transform_origin_point(self):
         self.setTransformOriginPoint(self.get_center_translation())
 
-    def constrain_item_inside_scene(self, value):
+    def constrain_item_inside_scene(self, value: Any) -> Any:
         scene_rect = self.scene().sceneRect()
         item_rect = self.boundingRect()
         item_rect.moveTopLeft(value)
@@ -51,7 +51,7 @@ class Graphic(QtWidgets.QGraphicsItemGroup):
             return value
         return value
 
-    def snap_item_to_nearest_item(self, value):
+    def snap_item_to_nearest_item(self, value: Any) -> Any:
         if not self.can_snap_to_others():
             return value
 
