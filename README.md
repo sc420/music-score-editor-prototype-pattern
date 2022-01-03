@@ -76,13 +76,15 @@ The installation process should be the same for both Windows and Linux.
     conda activate pyside2
     ```
 
-2. Generate Python files from `.ui` files
+2. Generate Python files from `.ui` files (only after you have modified `.ui`
+   files)
 
     ```bash
     pyside2-uic -o src/ui/mainwindow.py src/ui/mainwindow.ui
     ```
 
-3. Generate Python files from `.qrc` files
+3. Generate Python files from `.qrc` files (only after you have modified `.qrc`
+   files)
 
     ```bash
     pyside2-rcc -o src/resources_rc.py src/resources.qrc
