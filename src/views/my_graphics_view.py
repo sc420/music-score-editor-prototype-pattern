@@ -7,7 +7,7 @@ from app.toolkit import TOOLKIT_ITEMS
 from framework.tool import GraphicTools
 
 
-class GraphicsView(QtWidgets.QGraphicsView):
+class MyGraphicsView(QtWidgets.QGraphicsView):
     def __init__(self, parent=None):
         super().__init__(parent)
 

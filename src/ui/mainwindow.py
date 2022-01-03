@@ -12,7 +12,8 @@ from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
-from components.graphics_view import GraphicsView
+from views.my_graphics_view import MyGraphicsView
+from views.my_list_view import MyListView
 
 import resources_rc
 
@@ -33,7 +34,7 @@ class Ui_MainWindow(object):
         self.splitter = QSplitter(self.centralwidget)
         self.splitter.setObjectName(u"splitter")
         self.splitter.setOrientation(Qt.Horizontal)
-        self.listView = QListView(self.splitter)
+        self.listView = MyListView(self.splitter)
         self.listView.setObjectName(u"listView")
         self.listView.setMinimumSize(QSize(100, 300))
         self.listView.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -43,7 +44,7 @@ class Ui_MainWindow(object):
         self.listView.setSpacing(10)
         self.listView.setUniformItemSizes(True)
         self.splitter.addWidget(self.listView)
-        self.graphicsView = GraphicsView(self.splitter)
+        self.graphicsView = MyGraphicsView(self.splitter)
         self.graphicsView.setObjectName(u"graphicsView")
         sizePolicy = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(5)

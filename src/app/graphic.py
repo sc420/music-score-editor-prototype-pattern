@@ -22,6 +22,7 @@ class Graphic:
         new_item = self.create_item()
         new_item.setPos(self.item.pos())
         new_item.setTransform(self.item.transform())
+        new_item.setFlags(self.item.flags())
         return new_item
 
     def get_translation(self) -> QtCore.QPointF:
@@ -53,6 +54,8 @@ class WholeNote(MusicalNote):
 
     def create_item(self) -> QtWidgets.QGraphicsItem:
         item = QtSvg.QGraphicsSvgItem(":/graphics_view/icons/whole_note.svg")
+        item.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, True)
+        item.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, True)
         return item
 
     def get_translation(self) -> QtCore.QPointF:
@@ -67,6 +70,8 @@ class HalfNote(MusicalNote):
 
     def create_item(self) -> QtWidgets.QGraphicsItem:
         item = QtSvg.QGraphicsSvgItem(":/graphics_view/icons/half_note.svg")
+        item.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, True)
+        item.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, True)
         return item
 
     def get_translation(self) -> QtCore.QPointF:

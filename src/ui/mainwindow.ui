@@ -20,7 +20,7 @@
       <property name="orientation">
        <enum>Qt::Horizontal</enum>
       </property>
-      <widget class="QListView" name="listView">
+      <widget class="MyListView" name="listView">
        <property name="minimumSize">
         <size>
          <width>100</width>
@@ -49,7 +49,7 @@
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="GraphicsView" name="graphicsView">
+      <widget class="MyGraphicsView" name="graphicsView">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
          <horstretch>5</horstretch>
@@ -105,9 +105,14 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>GraphicsView</class>
+   <class>MyGraphicsView</class>
    <extends>QGraphicsView</extends>
-   <header>components.graphics_view</header>
+   <header>views.my_graphics_view</header>
+  </customwidget>
+  <customwidget>
+   <class>MyListView</class>
+   <extends>QListView</extends>
+   <header>views.my_list_view</header>
   </customwidget>
  </customwidgets>
  <resources>
