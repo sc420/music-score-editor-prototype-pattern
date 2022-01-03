@@ -52,6 +52,9 @@ class Graphic(QtWidgets.QGraphicsItemGroup):
         return value
 
     def snap_item_to_nearest_item(self, value):
+        if not self.can_snap_to_others():
+            return value
+
         src_snap_point = value + self.get_snap_point_translation()
 
         scene_rect = self.scene().sceneRect()
