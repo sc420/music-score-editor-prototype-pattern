@@ -76,7 +76,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Music Score Editor (Prototype Pattern Demo)", None))
         self.actionRotateRight.setText(QCoreApplication.translate("MainWindow", u"Rotate Right", None))
 #if QT_CONFIG(tooltip)
         self.actionRotateRight.setToolTip(QCoreApplication.translate("MainWindow", u"Rotate Right", None))
