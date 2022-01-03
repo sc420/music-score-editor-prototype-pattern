@@ -37,6 +37,7 @@ class RotateTool(Tool):
 
     def rotate_right(self):
         self.new_graphic = self.selected_graphic.clone()
-        self.new_graphic.setRotation(self.new_graphic.rotation() + 90)
+        new_rotation = (self.new_graphic.rotation() + 90) % 360
+        self.new_graphic.setRotation(new_rotation)
         self.scene.removeItem(self.selected_graphic)
         self.scene.addItem(self.new_graphic)
