@@ -37,10 +37,14 @@ class MyMainWindow(QtWidgets.QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.scene = QtWidgets.QGraphicsScene(self)
 
         self.init_list_view()
         self.init_graphics_view()
         self.connect_toolbar_actions_signals()
+        self.connect_graphics_scene_signals()
+
+        self.on_scene_selection_changed()
 
     def init_list_view(self):
         self.list_model = ToolkitItemModel(self.ui.listView)
@@ -56,7 +60,6 @@ class MyMainWindow(QtWidgets.QMainWindow):
         self.ui.listView.setModel(self.list_model)
 
     def init_graphics_view(self):
-        self.scene = QtWidgets.QGraphicsScene(self)
         self.ui.graphicsView.setScene(self.scene)
 
         # self.scene.addItem(Line(25, 25, 25, 50))
@@ -69,5 +72,12 @@ class MyMainWindow(QtWidgets.QMainWindow):
         self.ui.actionRotateRight.triggered.connect(
             self.on_trigger_rotate_right)
 
+    def connect_graphics_scene_signals(self):
+        self.scene.selectionChanged.connect(self.on_scene_selection_changed)
+
     def on_trigger_rotate_right(self):
         self.ui.graphicsView.rotate_selected_items_right()
+
+    def on_scene_selection_changed(self):
+        selected_items = self.scene.selectedItems()
+        self.ui.actionRotateRight.setEnabled(len(selected_items) > 0)
