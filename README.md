@@ -54,7 +54,7 @@ The installation process should be the same for both Windows and Linux.
     ```bash
     conda activate pyside2
     ```
-1. Run `mainwindow.py`
+1. Run `main.py`
     ```bash
-    python src/mainwindow.py
+    python src/main.py
     ```

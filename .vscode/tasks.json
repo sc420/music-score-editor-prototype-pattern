@@ -2,12 +2,12 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "python: mainwindow.py",
+      "label": "python: main.py",
       "type": "shell",
       "windows": {
         "command": "~/AppData/Local/Continuum/miniconda3/envs/pyside2/python.exe",
       },
-      "args": ["src/mainwindow.py"],
+      "args": ["src/main.py"],
       "problemMatcher": [],
     },
     {
