@@ -9,14 +9,9 @@ from PySide2 import QtCore, QtSvg, QtWidgets
 class Graphic(QtWidgets.QGraphicsItemGroup):
     def __init__(self, parent=None):
         super().__init__(parent)
-
-        self.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, True)
-        self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, True)
-        self.setFlag(QtWidgets.QGraphicsItem.ItemSendsGeometryChanges, True)
-
-        children = self.create_children()
-        for child in children:
-            self.addToGroup(child)
+        self.init_children()
+        self.init_flags()
+        self.init_transform_origin_point()
 
     def itemChange(self,
                    change: QtWidgets.QGraphicsItem.GraphicsItemChange,
@@ -29,6 +24,19 @@ class Graphic(QtWidgets.QGraphicsItemGroup):
             return value
 
         return super().itemChange(change, value)
+
+    def init_children(self):
+        children = self.create_children()
+        for child in children:
+            self.addToGroup(child)
+
+    def init_flags(self):
+        self.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, True)
+        self.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, True)
+        self.setFlag(QtWidgets.QGraphicsItem.ItemSendsGeometryChanges, True)
+
+    def init_transform_origin_point(self):
+        self.setTransformOriginPoint(self.get_center_translation())
 
     def constrain_item_inside_scene(self, value):
         scene_rect = self.scene().sceneRect()
@@ -93,7 +101,7 @@ class Graphic(QtWidgets.QGraphicsItemGroup):
     def set_group_attributes(self, old_item: Graphic):
         self.setFlags(old_item.flags())
         self.setPos(old_item.pos())
-        self.setTransform(old_item.transform())
+        self.setRotation(old_item.rotation())
 
     def get_snap_point_translation(self) -> QtCore.QPointF:
         """Gets translation from the top-left point (0,0) to the snap point
@@ -156,7 +164,7 @@ class Staff(Graphic):
         return QtCore.QPointF(69, 71)
 
     def can_be_snapped(self) -> bool:
-        return True
+        return self.rotation() == 0
 
     def get_dest_snap_point(self, local_pos: QtCore.QPointF) -> QtCore.QPointF:
         lines_size = QtCore.QSizeF(
@@ -197,7 +205,7 @@ class Staff(Graphic):
 
 class MusicalNote(Graphic):
     def can_snap_to_others(self) -> bool:
-        return True
+        return self.rotation() == 0
 
 
 class WholeNote(MusicalNote):

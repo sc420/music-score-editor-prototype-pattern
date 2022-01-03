@@ -2,9 +2,9 @@ from typing import List, Dict
 
 from PySide2 import QtCore, QtGui, QtWidgets
 
-from app.graphic import Staff, WholeNote, HalfNote
+from app.graphic import Graphic, Staff, WholeNote, HalfNote
 from app.toolkit import TOOLKIT_ITEMS
-from framework.tool import GraphicTools
+from framework.tool import GraphicTools, RotateTool
 
 
 class MyGraphicsView(QtWidgets.QGraphicsView):
@@ -48,16 +48,29 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
     def add_items(self, items: List[Dict[str, str]], scene_pos: QtCore.QPoint):
         for item in items:
             if item['name'] == 'staff':
-                obj = Staff()
+                graphic = Staff()
             elif item['name'] == 'whole_note':
-                obj = WholeNote()
+                graphic = WholeNote()
             elif item['name'] == 'half_note':
-                obj = HalfNote()
+                graphic = HalfNote()
             else:
                 raise ValueError(f'Unknown item name "{item["name"]}"')
 
-            graphic_tool = GraphicTools(self.scene(), obj)
+            graphic_tool = GraphicTools(self.scene(), graphic)
             graphic_tool.add_item(scene_pos)
+
+    def rotate_selected_items_right(self):
+        items = self.scene().selectedItems()
+
+        # Get list of graphics
+        graphics = filter(lambda obj: isinstance(obj, Graphic), items)
+
+        for graphic in graphics:
+            rotate_tool = RotateTool(self.scene(), graphic)
+            rotate_tool.rotate_right()
+            new_graphic = rotate_tool.get_new_graphic()
+            if new_graphic:
+                new_graphic.setSelected(True)
 
     @staticmethod
     def parse_mime_data(mime_data: QtCore.QMimeData) -> List[Dict[str, str]]:

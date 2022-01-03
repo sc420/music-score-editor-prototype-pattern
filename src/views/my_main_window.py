@@ -31,6 +31,7 @@ class ToolkitItemModel(QStandardItemModel):
         mime_data.setUrls(urls)
         return mime_data
 
+
 class MyMainWindow(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
@@ -39,6 +40,7 @@ class MyMainWindow(QtWidgets.QMainWindow):
 
         self.init_list_view()
         self.init_graphics_view()
+        self.connect_toolbar_actions_signals()
 
     def init_list_view(self):
         self.list_model = ToolkitItemModel(self.ui.listView)
@@ -62,3 +64,10 @@ class MyMainWindow(QtWidgets.QMainWindow):
         # self.scene.addItem(Line(35, 40, 35, 65))
 
         self.scene.setSceneRect(self.ui.graphicsView.frameGeometry())
+
+    def connect_toolbar_actions_signals(self):
+        self.ui.actionRotateRight.triggered.connect(
+            self.on_trigger_rotate_right)
+
+    def on_trigger_rotate_right(self):
+        self.ui.graphicsView.rotate_selected_items_right()
