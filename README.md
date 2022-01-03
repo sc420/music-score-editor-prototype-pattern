@@ -13,11 +13,13 @@ trying to show the advantages of prototype pattern the book claims.
 ## What's the Difference If We Don't Use Prototype Pattern?
 
 The book says if we use prototype pattern we can reduce subclasses. What would
-happen if we don't? I've written a class
-`src.framework.tool_without_prototype` that demonstrates the consequences.
+happen if we don't? I've written a file
+[src/framework/tool_without_prototype.py](src/framework/tool_without_prototype.py)
+that demonstrates the consequences.
 
-To use the `tool_without_prototype`, simply comment and uncomment the import
-lines in `src.views.my_graphics_view`.
+To use [src/framework/tool_without_prototype.py](src/framework/tool_without_prototype.py),
+simply comment and uncomment the import lines in
+[src/views/my_graphics_view.py](src/views/my_graphics_view.py).
 
 ## Structure
 
