@@ -1,3 +1,5 @@
+from PySide2 import QtCore, QtGui
+
 TOOLKIT_ITEMS = [
     {
         "name": "staff",
@@ -18,3 +20,11 @@ TOOLKIT_ITEMS = [
         "text": "Whole Note"
     }
 ]
+
+
+class ToolkitItemModel(QtGui.QStandardItemModel):
+    def mimeData(self, indexes):
+        mime_data = QtCore.QMimeData()
+        urls = [TOOLKIT_ITEMS[index.row()]['mimeData'] for index in indexes]
+        mime_data.setUrls(urls)
+        return mime_data

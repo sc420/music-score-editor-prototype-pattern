@@ -1,16 +1,8 @@
-from PySide2 import QtCore, QtGui, QtWidgets
+from PySide2 import QtGui, QtWidgets
 
-from app.toolkit import TOOLKIT_ITEMS
+from app.toolkit import TOOLKIT_ITEMS, ToolkitItemModel
 
 from ui.mainwindow import Ui_MainWindow
-
-
-class ToolkitItemModel(QtGui.QStandardItemModel):
-    def mimeData(self, indexes):
-        mime_data = QtCore.QMimeData()
-        urls = [TOOLKIT_ITEMS[index.row()]['mimeData'] for index in indexes]
-        mime_data.setUrls(urls)
-        return mime_data
 
 
 class MyMainWindow(QtWidgets.QMainWindow):
