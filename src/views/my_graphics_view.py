@@ -4,7 +4,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 
 from app.graphic import Graphic, Staff, WholeNote, HalfNote
 from app.toolkit import TOOLKIT_ITEMS
-from framework.tool import GraphicTools, RotateTool
+from framework.tool import GraphicTool, RotateTool
 
 
 class MyGraphicsView(QtWidgets.QGraphicsView):
@@ -80,7 +80,7 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
                      scene_pos: QtCore.QPoint) -> List[Graphic]:
         new_graphics = []
         for graphic in graphics:
-            graphic_tool = GraphicTools(self.scene(), graphic)
+            graphic_tool = GraphicTool(self.scene(), graphic)
             graphic_tool.add_item(scene_pos)
             new_graphic = graphic_tool.get_new_graphic()
             new_graphics.append(new_graphic)

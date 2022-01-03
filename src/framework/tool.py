@@ -14,7 +14,7 @@ class Tool:
         return self.new_graphic
 
 
-class GraphicTools(Tool):
+class GraphicTool(Tool):
     def __init__(self,
                  scene: QtWidgets.QGraphicsScene,
                  prototype_graphic: Graphic):
