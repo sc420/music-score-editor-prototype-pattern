@@ -23,8 +23,8 @@ class MyMainWindow(QtWidgets.QMainWindow):
         self.list_model = ToolkitItemModel(self.ui.listView)
 
         for item in TOOLKIT_ITEMS:
-            icon = QtGui.QIcon(item['icon'])
-            item = QtGui.QStandardItem(icon, item['text'])
+            icon = QtGui.QIcon(item["icon"])
+            item = QtGui.QStandardItem(icon, item["text"])
 
             # Add the item to the model
             self.list_model.appendRow(item)
@@ -37,7 +37,8 @@ class MyMainWindow(QtWidgets.QMainWindow):
 
     def connect_toolbar_actions_signals(self):
         self.ui.actionRotateRight.triggered.connect(
-            self.on_trigger_rotate_right)
+            self.on_trigger_rotate_right
+        )
 
     def connect_graphics_scene_signals(self):
         self.scene.selectionChanged.connect(self.on_scene_selection_changed)

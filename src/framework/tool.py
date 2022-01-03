@@ -15,9 +15,9 @@ class Tool:
 
 
 class GraphicTool(Tool):
-    def __init__(self,
-                 scene: QtWidgets.QGraphicsScene,
-                 prototype_graphic: Graphic):
+    def __init__(
+        self, scene: QtWidgets.QGraphicsScene, prototype_graphic: Graphic
+    ):
         super().__init__(scene)
         self.prototype_graphic = prototype_graphic
 
@@ -29,9 +29,9 @@ class GraphicTool(Tool):
 
 
 class RotateTool(Tool):
-    def __init__(self,
-                 scene: QtWidgets.QGraphicsScene,
-                 selected_graphic: Graphic):
+    def __init__(
+        self, scene: QtWidgets.QGraphicsScene, selected_graphic: Graphic
+    ):
         super().__init__(scene)
         self.selected_graphic = selected_graphic
 

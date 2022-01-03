@@ -17,9 +17,9 @@ class Tool:
 
 
 class GraphicTool(Tool):
-    def __init__(self,
-                 scene: QtWidgets.QGraphicsScene,
-                 prototype_graphic: Graphic):
+    def __init__(
+        self, scene: QtWidgets.QGraphicsScene, prototype_graphic: Graphic
+    ):
         """
         NOTE: It should not have prototype_graphic argument if we are not using
         prototype pattern. But we make the interface compatible with tool.py
@@ -31,16 +31,17 @@ class GraphicTool(Tool):
 
     def add_item(self, pos: QtCore.QPointF):
         if isinstance(self.prototype_graphic, Staff):
-            graphic_tool = StaffGraphicTool(
-                self.scene, self.prototype_graphic)
+            graphic_tool = StaffGraphicTool(self.scene, self.prototype_graphic)
         elif isinstance(self.prototype_graphic, WholeNote):
             graphic_tool = WholeNoteGraphicTool(
-                self.scene, self.prototype_graphic)
+                self.scene, self.prototype_graphic
+            )
         elif isinstance(self.prototype_graphic, HalfNote):
             graphic_tool = HalfNoteGraphicTool(
-                self.scene, self.prototype_graphic)
+                self.scene, self.prototype_graphic
+            )
         else:
-            raise ValueError('Unknown type of prototype graphic')
+            raise ValueError("Unknown type of prototype graphic")
 
         self.new_graphic = graphic_tool.create_graphic()
         translated_pos = pos - self.new_graphic.get_snap_point_translation()
@@ -69,9 +70,9 @@ class HalfNoteGraphicTool(GraphicTool):
 
 
 class RotateTool(Tool):
-    def __init__(self,
-                 scene: QtWidgets.QGraphicsScene,
-                 selected_graphic: Graphic):
+    def __init__(
+        self, scene: QtWidgets.QGraphicsScene, selected_graphic: Graphic
+    ):
         super().__init__(scene)
         self.selected_graphic = selected_graphic
 

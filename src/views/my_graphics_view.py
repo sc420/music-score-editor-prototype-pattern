@@ -5,6 +5,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from app.graphic import Graphic, Staff, WholeNote, HalfNote
 from app.toolkit import TOOLKIT_ITEMS
 from framework.tool import GraphicTool, RotateTool
+
 # from framework.tool_without_prototype import GraphicTool, RotateTool
 
 
@@ -24,7 +25,8 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
             pos = event.pos()
             scene_pos = self.mapToScene(pos.x(), pos.y())
             self.dragging_graphics = self.add_graphics(
-                prototype_graphics, scene_pos)
+                prototype_graphics, scene_pos
+            )
 
     def dragMoveEvent(self, event: QtGui.QDragMoveEvent):
         items = self.parse_mime_data(event.mimeData())
@@ -35,7 +37,8 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
             scene_pos = self.mapToScene(pos.x(), pos.y())
             for dragging_graphic in self.dragging_graphics:
                 translated_pos = (
-                    scene_pos - dragging_graphic.get_snap_point_translation())
+                    scene_pos - dragging_graphic.get_snap_point_translation()
+                )
                 dragging_graphic.setPos(translated_pos)
 
     def dragLeaveEvent(self, event: QtGui.QDragLeaveEvent):
@@ -65,20 +68,20 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
     def create_graphics(self, items: List[Dict[str, str]]) -> List[Graphic]:
         graphics = []
         for item in items:
-            if item['name'] == 'staff':
+            if item["name"] == "staff":
                 graphic = Staff()
-            elif item['name'] == 'whole_note':
+            elif item["name"] == "whole_note":
                 graphic = WholeNote()
-            elif item['name'] == 'half_note':
+            elif item["name"] == "half_note":
                 graphic = HalfNote()
             else:
                 raise ValueError(f'Unknown item name "{item["name"]}"')
             graphics.append(graphic)
         return graphics
 
-    def add_graphics(self,
-                     graphics: List[Graphic],
-                     scene_pos: QtCore.QPoint) -> List[Graphic]:
+    def add_graphics(
+        self, graphics: List[Graphic], scene_pos: QtCore.QPoint
+    ) -> List[Graphic]:
         new_graphics = []
         for graphic in graphics:
             graphic_tool = GraphicTool(self.scene(), graphic)
@@ -109,5 +112,5 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
         if not mime_data.hasUrls():
             return []
         urls = mime_data.urls()
-        items = filter(lambda item: item['mimeData'] in urls, TOOLKIT_ITEMS)
+        items = filter(lambda item: item["mimeData"] in urls, TOOLKIT_ITEMS)
         return list(items)
