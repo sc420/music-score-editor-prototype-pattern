@@ -5,6 +5,7 @@ from PySide2 import QtCore, QtGui, QtWidgets
 from app.graphic import Graphic, Staff, WholeNote, HalfNote
 from app.toolkit import TOOLKIT_ITEMS
 from framework.tool import GraphicTool, RotateTool
+# from framework.tool_without_prototype import GraphicTool, RotateTool
 
 
 class MyGraphicsView(QtWidgets.QGraphicsView):
