@@ -4,21 +4,23 @@ from typing import Optional
 
 from PySide2 import QtCore, QtSvg, QtWidgets
 
+from views.my_graphics_item_group import MyGraphicsItemGroup
+
 
 class Graphic:
-    def __init__(self, item: Optional[QtWidgets.QGraphicsItem] = None):
+    def __init__(self, item: Optional[MyGraphicsItemGroup] = None):
         self.item = item or self.create_item()
 
     def clone(self) -> Graphic:
         raise NotImplementedError()
 
-    def create_item(self) -> QtWidgets.QGraphicsItem:
+    def create_item(self) -> MyGraphicsItemGroup:
         raise NotImplementedError()
 
-    def get_item(self) -> QtWidgets.QGraphicsItem:
+    def get_item(self) -> MyGraphicsItemGroup:
         return self.item
 
-    def clone_graphic_item(self) -> QtWidgets.QGraphicsItem:
+    def clone_graphic_item(self) -> MyGraphicsItemGroup:
         new_item = self.create_item()
         new_item.setFlags(self.item.flags())
         new_item.setPos(self.item.pos())
@@ -38,7 +40,7 @@ class Graphic:
 
 
 class Staff(Graphic):
-    def __init__(self, item: Optional[QtWidgets.QGraphicsItem] = None):
+    def __init__(self, item: Optional[MyGraphicsItemGroup] = None):
         self.horizontal_distance = 300
         # The height of the whole note is approximately 10 px
         self.vertical_gap = 10
@@ -49,8 +51,8 @@ class Staff(Graphic):
         new_item = self.clone_graphic_item()
         return Staff(new_item)
 
-    def create_item(self) -> QtWidgets.QGraphicsItem:
-        group = QtWidgets.QGraphicsItemGroup()
+    def create_item(self) -> MyGraphicsItemGroup:
+        group = MyGraphicsItemGroup()
         item = QtSvg.QGraphicsSvgItem(":/graphics_view/icons/G-clef.svg")
         item.setScale(2)
         item.setPos(-45, -41)
@@ -87,12 +89,15 @@ class WholeNote(MusicalNote):
         new_item = self.clone_graphic_item()
         return WholeNote(new_item)
 
-    def create_item(self) -> QtWidgets.QGraphicsItem:
+    def create_item(self) -> MyGraphicsItemGroup:
+        group = MyGraphicsItemGroup()
         item = QtSvg.QGraphicsSvgItem(":/graphics_view/icons/whole_note.svg")
-        item.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, True)
-        item.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, True)
-        item.setFlag(QtWidgets.QGraphicsItem.ItemSendsGeometryChanges, True)
-        return item
+        group.addToGroup(item)
+
+        group.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, True)
+        group.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, True)
+        group.setFlag(QtWidgets.QGraphicsItem.ItemSendsGeometryChanges, True)
+        return group
 
     def get_translation(self) -> QtCore.QPointF:
         translation = self.get_center_translation()
@@ -104,12 +109,15 @@ class HalfNote(MusicalNote):
         new_item = self.clone_graphic_item()
         return HalfNote(new_item)
 
-    def create_item(self) -> QtWidgets.QGraphicsItem:
+    def create_item(self) -> MyGraphicsItemGroup:
+        group = MyGraphicsItemGroup()
         item = QtSvg.QGraphicsSvgItem(":/graphics_view/icons/half_note.svg")
-        item.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, True)
-        item.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, True)
-        item.setFlag(QtWidgets.QGraphicsItem.ItemSendsGeometryChanges, True)
-        return item
+        group.addToGroup(item)
+
+        group.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, True)
+        group.setFlag(QtWidgets.QGraphicsItem.ItemIsSelectable, True)
+        group.setFlag(QtWidgets.QGraphicsItem.ItemSendsGeometryChanges, True)
+        return group
 
     def get_translation(self) -> QtCore.QPointF:
         translation = self.get_center_translation()

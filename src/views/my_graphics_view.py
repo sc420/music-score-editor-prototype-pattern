@@ -37,6 +37,13 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
         else:
             event.ignore()
 
+    def resizeEvent(self, event: QtGui.QResizeEvent):
+        super().resizeEvent(event)
+
+        # Update the scene rectangle to match the view
+        rect = self.contentsRect()
+        self.scene().setSceneRect(rect)
+
     def add_items(self, items: List[Dict[str, str]], scene_pos: QtCore.QPoint):
         for item in items:
             if item['name'] == 'staff':
