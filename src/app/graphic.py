@@ -44,6 +44,7 @@ class Staff(Graphic):
         self.horizontal_distance = 300
         # The height of the whole note is approximately 10 px
         self.vertical_gap = 10
+        self.lines_offset = QtCore.QPointF(45, 41)
 
         super().__init__(item)
 
@@ -55,13 +56,12 @@ class Staff(Graphic):
         group = MyGraphicsItemGroup()
         item = QtSvg.QGraphicsSvgItem(":/graphics_view/icons/G-clef.svg")
         item.setScale(2)
-        item.setPos(-45, -41)
         group.addToGroup(item)
 
         for i in range(5):
-            y = i * self.vertical_gap
-            x1 = 0
-            x2 = self.horizontal_distance
+            y = self.lines_offset.y() + i * self.vertical_gap
+            x1 = self.lines_offset.x()
+            x2 = self.lines_offset.x() + self.horizontal_distance
             line = QtWidgets.QGraphicsLineItem(x1, y, x2, y)
             group.addToGroup(line)
 
