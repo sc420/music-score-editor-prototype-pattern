@@ -1,4 +1,4 @@
-from typing import List, Dict
+from typing import Dict, List, Optional
 
 from PySide2 import QtCore, QtGui, QtWidgets
 
@@ -11,32 +11,48 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        self.dragging_graphics: Optional[List[Graphic]] = None
+
     def dragEnterEvent(self, event: QtGui.QDragEnterEvent):
         # Reference: https://gist.github.com/benjaminirving/f45de3bbabbcacd3ca29
         items = self.parse_mime_data(event.mimeData())
         if items:
             event.acceptProposedAction()
 
-    def dragLeaveEvent(self, event: QtGui.QDragLeaveEvent):
-        """
-        Does nothing but can disable the Qt warning
-        "QGraphicsView::dragLeaveEvent: drag leave received before drag enter".
-        """
-        pass
+            prototype_graphics = self.create_graphics(items)
+            pos = event.pos()
+            scene_pos = self.mapToScene(pos.x(), pos.y())
+            self.dragging_graphics = self.add_graphics(
+                prototype_graphics, scene_pos)
 
     def dragMoveEvent(self, event: QtGui.QDragMoveEvent):
         items = self.parse_mime_data(event.mimeData())
         if items:
             event.acceptProposedAction()
 
+            pos = event.pos()
+            scene_pos = self.mapToScene(pos.x(), pos.y())
+            for dragging_graphic in self.dragging_graphics:
+                translated_pos = (
+                    scene_pos - dragging_graphic.get_snap_point_translation())
+                dragging_graphic.setPos(translated_pos)
+
+    def dragLeaveEvent(self, event: QtGui.QDragLeaveEvent):
+        if self.dragging_graphics:
+            self.remove_graphics(self.dragging_graphics)
+
     def dropEvent(self, event: QtGui.QDropEvent):
         items = self.parse_mime_data(event.mimeData())
         if items:
             event.acceptProposedAction()
 
-            pos = event.pos()
-            scene_pos = self.mapToScene(pos.x(), pos.y())
-            self.add_items(items, scene_pos)
+            if not self.dragging_graphics:
+                self.remove_graphics(self.dragging_graphics)
+
+                pos = event.pos()
+                scene_pos = self.mapToScene(pos.x(), pos.y())
+                graphics = self.create_graphics(items)
+                self.add_graphics(graphics, scene_pos)
 
     def resizeEvent(self, event: QtGui.QResizeEvent):
         super().resizeEvent(event)
@@ -45,7 +61,8 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
         rect = self.contentsRect()
         self.scene().setSceneRect(rect)
 
-    def add_items(self, items: List[Dict[str, str]], scene_pos: QtCore.QPoint):
+    def create_graphics(self, items: List[Dict[str, str]]) -> List[Graphic]:
+        graphics = []
         for item in items:
             if item['name'] == 'staff':
                 graphic = Staff()
@@ -55,9 +72,23 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
                 graphic = HalfNote()
             else:
                 raise ValueError(f'Unknown item name "{item["name"]}"')
+            graphics.append(graphic)
+        return graphics
 
+    def add_graphics(self,
+                     graphics: List[Graphic],
+                     scene_pos: QtCore.QPoint) -> List[Graphic]:
+        new_graphics = []
+        for graphic in graphics:
             graphic_tool = GraphicTools(self.scene(), graphic)
             graphic_tool.add_item(scene_pos)
+            new_graphic = graphic_tool.get_new_graphic()
+            new_graphics.append(new_graphic)
+        return new_graphics
+
+    def remove_graphics(self, graphics: List[Graphic]):
+        for graphic in graphics:
+            self.scene().removeItem(graphic)
 
     def rotate_selected_items_right(self):
         items = self.scene().selectedItems()
