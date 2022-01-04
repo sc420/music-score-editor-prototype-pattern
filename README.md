@@ -135,3 +135,16 @@ Open the project file `music-score-editor-prototype-demo.pyproject` in Qt Creato
 
 - `src/ui/mainwindow.ui`
 - `src/resources.qrc`
+
+## Tools Used for Creating This Project
+
+These tools are all free and open-source:
+
+- [Visual Studio Code](https://code.visualstudio.com/): editing source code and
+  running GUI
+- [Qt Creator](https://www.qt.io/product/development-tools): editing `.ui` and
+  `.qrc` files
+- [Miniconda](https://conda.io/miniconda.html): providing Python environment
+- [Inkscape](https://inkscape.org/): editing `.svg` files
+- [diagrams.net Desktop](https://chrome.google.com/webstore/detail/diagramsnet-desktop/pebppomjfocnoigkeepgbmcifnnlndla):
+  creating diagrams
