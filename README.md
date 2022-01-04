@@ -16,7 +16,7 @@ With prototype pattern:
 
 ![with-prototype](docs/diagrams-with-prototype.svg)
 
-Without prototype pattern we'll introduce lots of parallel subclasses (orange)
+Without prototype pattern we may introduce lots of parallel subclasses (orange)
 under GraphicTool:
 
 ![without-prototype](docs/diagrams-without-prototype.svg)
@@ -41,6 +41,29 @@ We can reuse the framework in other applications too as long as they provide the
 `clone` methods telling the framework how to copy the objects so that the
 framework can put them on the canvas.
 
+## Pro: Faster Objects Creation
+
+You might ask why not just create new objects and pass the ownership to
+`GraphicTool`? We can still reuse the framework.
+[What's the point](https://stackoverflow.com/questions/13887704/whats-the-point-of-the-prototype-design-pattern)
+of the prototype pattern?
+
+Another appropriate scenario for choosing prototype pattern over simply creating
+new objects is when the cloning process is potentially faster than creating the
+objects (e.g., shallow copying, copy-on-write), or when the objects can't be
+created again (e.g., objects created with data received from the network).
+
+In this project, when a prototype `QGraphicsItemGroup` is first created, it uses
+`QSvgRenderer` to parse the SVG files. The parsing process may be expensive if
+there are lots of SVG files or when some SVG files are big.
+
+Later when a `QGraphicsItemGroup` is cloned, it simply reuses the `QSvgRenderer`
+to skip re-parsing the SVG files. This can be observed in the `qDebug` messages
+by seeing that `QSvgRenderer` with the same filename is only created once when
+you drag and drop a musical note the first time. See `reuse_svg_renderers` and
+`find_or_create_svg_item` in [src/app/graphics.py](src/app/graphic.py) for
+related code.
+
 ## Structure
 
 There are 3 types of basic components in prototype pattern:
@@ -52,6 +75,7 @@ There are 3 types of basic components in prototype pattern:
 - Can drag and drop items from the toolkit to the canvas
 - The whole note and half note will snap to the lines of the nearest staff
 - Can rotate each musical note
+- You can't move musical notes outside the canvas
 
 ## Implementation
 
@@ -59,6 +83,8 @@ There are 3 types of basic components in prototype pattern:
 - The `QGraphicsScene` holds many `QGraphicsItemGroup`
 - `QGraphicsItemGroup` holds one or many subclasses of `QGraphicsItem`
   (e.g., `QGraphicsSvgItem` and `QGraphicsLineItem`)
+- The cloned `QGraphicsSvgItem` shares the same `QSvgRenderer` with the old
+  `QGraphicsSvgItem`
 
 ## Install
 
