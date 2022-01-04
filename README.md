@@ -83,8 +83,8 @@ There are 3 types of basic components in prototype pattern:
 - The `QGraphicsScene` holds many `QGraphicsItemGroup`
 - `QGraphicsItemGroup` holds one or many subclasses of `QGraphicsItem`
   (e.g., `QGraphicsSvgItem` and `QGraphicsLineItem`)
-- The cloned `QGraphicsSvgItem` shares the same `QSvgRenderer` with the old
-  `QGraphicsSvgItem`
+- The `QGraphicsSvgItem` in the cloned `QGraphicsItemGroup` share the same
+  `QSvgRenderer` with the `QGraphicsSvgItem` in the old `QGraphicsItemGroup`
 
 ## Install
 
