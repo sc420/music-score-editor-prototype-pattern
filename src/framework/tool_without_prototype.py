@@ -62,16 +62,16 @@ class StaffGraphicTool(GraphicTool):
         return Staff()
 
 
-class MusicNoteGraphicTool(GraphicTool):
+class MusicalNoteGraphicTool(GraphicTool):
     ...
 
 
-class WholeNoteGraphicTool(MusicNoteGraphicTool):
+class WholeNoteGraphicTool(MusicalNoteGraphicTool):
     def create_graphic(self) -> Graphic:
         return WholeNote()
 
 
-class HalfNoteGraphicTool(MusicNoteGraphicTool):
+class HalfNoteGraphicTool(MusicalNoteGraphicTool):
     def create_graphic(self) -> Graphic:
         return HalfNote()
 
