@@ -57,10 +57,13 @@ In this project, when a prototype `QGraphicsItemGroup` is first created, it uses
 `QSvgRenderer` to parse the SVG files. The parsing process may be expensive if
 there are lots of SVG files or when some SVG files are big.
 
-Later when a `QGraphicsItemGroup` is cloned, it simply reuses the `QSvgRenderer`
-to skip re-parsing the SVG files. This can be observed in the `qDebug` messages
-by seeing that `QSvgRenderer` with the same filename is only created once when
-you drag and drop a musical note the first time. See `reuse_svg_renderers` and
+Later when a `QGraphicsItemGroup` is cloned, we need to create
+`QGraphicsSvgItem` again since it can't be cloned, but we can reuse the
+`QSvgRenderer` (like its internal data) to skip re-parsing the SVG files.
+
+The reusing behavior can be observed in the `qDebug` messages by seeing that
+`QSvgRenderer` with the same filename is only created once when you drag and
+drop a musical note the first time. See `reuse_svg_renderers` and
 `find_or_create_svg_item` in [src/app/graphics.py](src/app/graphic.py) for
 related code.
 
