@@ -8,6 +8,7 @@ from app.graphic import Graphic, Staff, WholeNote, HalfNote
 class Tool:
     def __init__(self, scene: QtWidgets.QGraphicsScene):
         self.scene = scene
+        self.new_graphic = None
 
     def get_new_graphic(self) -> Optional[Graphic]:
         return self.new_graphic
