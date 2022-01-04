@@ -1,14 +1,21 @@
 from __future__ import annotations
 
-from typing import Any, cast, List
+from typing import Any, cast, Dict, List, Optional
 import math
 
 from PySide2 import QtCore, QtSvg, QtWidgets
 
 
 class Graphic(QtWidgets.QGraphicsItemGroup):
-    def __init__(self, parent=None):
+    def __init__(
+        self,
+        parent: Optional[QtWidgets.QGraphicsItem] = None,
+        old_graphic: Optional[Graphic] = None,
+    ):
         super().__init__(parent)
+
+        self.reuse_svg_renderers(old_graphic)
+
         self.init_children()
         self.init_flags()
         self.init_transform_origin_point()
@@ -27,6 +34,15 @@ class Graphic(QtWidgets.QGraphicsItemGroup):
             return new_pos
 
         return super().itemChange(change, value)
+
+    def reuse_svg_renderers(self, old_graphic: Optional[Graphic]):
+        if old_graphic:
+            # Reuse the SVG renderers so we don't need to parse the SVG files
+            # again
+            # Reference: https://doc.qt.io/qt-5/qgraphicssvgitem.html#setSharedRenderer
+            self.svg_renderers = old_graphic.svg_renderers
+        else:
+            self.svg_renderers: Dict[str, QtSvg.QSvgRenderer] = {}
 
     def init_children(self):
         children = self.create_children()
@@ -122,6 +138,14 @@ class Graphic(QtWidgets.QGraphicsItemGroup):
     def create_children(self) -> List[QtWidgets.QGraphicsItem]:
         raise NotImplementedError()
 
+    def find_or_create_svg_item(self, filename: str) -> QtSvg.QGraphicsSvgItem:
+        if not filename in self.svg_renderers:
+            QtCore.qDebug(f'Create QSvgRenderer(filename="{filename}")')
+            self.svg_renderers[filename] = QtSvg.QSvgRenderer(filename)
+        item = QtSvg.QGraphicsSvgItem(self.parentItem())
+        item.setSharedRenderer(self.svg_renderers[filename])
+        return item
+
     def set_group_attributes(self, old_item: Graphic):
         self.setFlags(old_item.flags())
         self.setPos(old_item.pos())
@@ -151,23 +175,27 @@ class Graphic(QtWidgets.QGraphicsItemGroup):
 
 
 class Staff(Graphic):
-    def __init__(self, parent=None):
+    def __init__(
+        self,
+        parent: Optional[QtWidgets.QGraphicsItem] = None,
+        old_graphic: Optional[Graphic] = None,
+    ):
         self.num_lines = 5
         self.horizontal_distance = 300
         # The height of the whole note is approximately 10 px
         self.vertical_gap = 10
         self.lines_offset = QtCore.QPointF(45, 41)
 
-        super().__init__(parent)
+        super().__init__(parent, old_graphic)
 
     def clone(self) -> Graphic:
-        cloned_graphic = Staff(self.parentItem())
+        cloned_graphic = Staff(self.parentItem(), self)
         cloned_graphic.set_group_attributes(self)
         return cloned_graphic
 
     def create_children(self) -> List[QtWidgets.QGraphicsItem]:
         items = []
-        item = QtSvg.QGraphicsSvgItem(":/graphics_view/icons/G-clef.svg")
+        item = self.find_or_create_svg_item(":/graphics_view/icons/G-clef.svg")
         item.setScale(2)
         items.append(item)
 
@@ -235,12 +263,14 @@ class MusicalNote(Graphic):
 
 class WholeNote(MusicalNote):
     def clone(self) -> Graphic:
-        cloned_graphic = WholeNote(self.parentItem())
+        cloned_graphic = WholeNote(self.parentItem(), self)
         cloned_graphic.set_group_attributes(self)
         return cloned_graphic
 
     def create_children(self) -> List[QtWidgets.QGraphicsItem]:
-        items = [QtSvg.QGraphicsSvgItem(":/graphics_view/icons/whole_note.svg")]
+        items = [
+            self.find_or_create_svg_item(":/graphics_view/icons/whole_note.svg")
+        ]
         return items
 
     def get_snap_point_translation(self) -> QtCore.QPointF:
@@ -250,12 +280,14 @@ class WholeNote(MusicalNote):
 
 class HalfNote(MusicalNote):
     def clone(self) -> Graphic:
-        cloned_graphic = HalfNote(self.parentItem())
+        cloned_graphic = HalfNote(self.parentItem(), self)
         cloned_graphic.set_group_attributes(self)
         return cloned_graphic
 
     def create_children(self) -> List[QtWidgets.QGraphicsItem]:
-        items = [QtSvg.QGraphicsSvgItem(":/graphics_view/icons/half_note.svg")]
+        items = [
+            self.find_or_create_svg_item(":/graphics_view/icons/half_note.svg")
+        ]
         return items
 
     def get_snap_point_translation(self) -> QtCore.QPointF:

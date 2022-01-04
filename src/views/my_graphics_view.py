@@ -13,6 +13,7 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        self.cached_prototypes: Dict[str, Graphic] = {}
         self.dragging_graphics: Optional[List[Graphic]] = None
 
     def dragEnterEvent(self, event: QtGui.QDragEnterEvent):
@@ -21,7 +22,7 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
         if items:
             event.acceptProposedAction()
 
-            prototype_graphics = self.create_graphics(items)
+            prototype_graphics = self.find_or_create_prototypes(items)
             pos = event.pos()
             scene_pos = self.mapToScene(pos.x(), pos.y())
             self.dragging_graphics = self.add_graphics(
@@ -55,8 +56,8 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
 
                 pos = event.pos()
                 scene_pos = self.mapToScene(pos.x(), pos.y())
-                graphics = self.create_graphics(items)
-                self.add_graphics(graphics, scene_pos)
+                prototypes = self.find_or_create_prototypes(items)
+                self.add_graphics(prototypes, scene_pos)
 
     def resizeEvent(self, event: QtGui.QResizeEvent):
         super().resizeEvent(event)
@@ -65,26 +66,33 @@ class MyGraphicsView(QtWidgets.QGraphicsView):
         rect = self.contentsRect()
         self.scene().setSceneRect(rect)
 
-    def create_graphics(self, items: List[Dict[str, str]]) -> List[Graphic]:
-        graphics = []
+    def find_or_create_prototypes(
+        self, items: List[Dict[str, str]]
+    ) -> List[Graphic]:
+        prototypes = []
         for item in items:
-            if item["name"] == "staff":
-                graphic = Staff()
-            elif item["name"] == "whole_note":
-                graphic = WholeNote()
-            elif item["name"] == "half_note":
-                graphic = HalfNote()
-            else:
-                raise ValueError(f'Unknown item name "{item["name"]}"')
-            graphics.append(graphic)
-        return graphics
+            name = item["name"]
+            if name not in self.cached_prototypes:
+                self.cached_prototypes[name] = self.create_prototype(name)
+            prototypes.append(self.cached_prototypes[name])
+        return prototypes
+
+    def create_prototype(self, name: str) -> Graphic:
+        if name == "staff":
+            return Staff()
+        elif name == "whole_note":
+            return WholeNote()
+        elif name == "half_note":
+            return HalfNote()
+        else:
+            raise ValueError(f'Unknown item name "{name}"')
 
     def add_graphics(
-        self, graphics: List[Graphic], scene_pos: QtCore.QPoint
+        self, prototypes: List[Graphic], scene_pos: QtCore.QPoint
     ) -> List[Graphic]:
         new_graphics = []
-        for graphic in graphics:
-            graphic_tool = GraphicTool(self.scene(), graphic)
+        for prototype in prototypes:
+            graphic_tool = GraphicTool(self.scene(), prototype)
             graphic_tool.add_item(scene_pos)
             new_graphic = graphic_tool.get_new_graphic()
             new_graphics.append(new_graphic)
