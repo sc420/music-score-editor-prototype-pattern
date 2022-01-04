@@ -9,9 +9,6 @@ class Tool:
     def __init__(self, scene: QtWidgets.QGraphicsScene):
         self.scene = scene
 
-    def create_graphic(self) -> Graphic:
-        raise NotImplementedError()
-
     def get_new_graphic(self) -> Optional[Graphic]:
         return self.new_graphic
 
@@ -30,6 +27,17 @@ class GraphicTool(Tool):
         self.prototype_graphic = prototype_graphic
 
     def add_item(self, pos: QtCore.QPointF):
+        self.new_graphic = self.fake_create_graphic()
+        translated_pos = pos - self.new_graphic.get_snap_point_translation()
+        self.new_graphic.setPos(translated_pos)
+        self.scene.addItem(self.new_graphic)
+
+    def fake_create_graphic(self) -> Graphic:
+        """
+        NOTE: It should be the client that creates the graphic tools. You can
+        see that the client would create a bunch of subclasses in parallel of
+        the Graphic subclasses if we move these code outside this file.
+        """
         if isinstance(self.prototype_graphic, Staff):
             graphic_tool = StaffGraphicTool(self.scene, self.prototype_graphic)
         elif isinstance(self.prototype_graphic, WholeNote):
@@ -42,11 +50,10 @@ class GraphicTool(Tool):
             )
         else:
             raise ValueError("Unknown type of prototype graphic")
+        return graphic_tool.create_graphic()
 
-        self.new_graphic = graphic_tool.create_graphic()
-        translated_pos = pos - self.new_graphic.get_snap_point_translation()
-        self.new_graphic.setPos(translated_pos)
-        self.scene.addItem(self.new_graphic)
+    def create_graphic(self) -> Graphic:
+        ...
 
 
 class StaffGraphicTool(GraphicTool):
@@ -55,16 +62,15 @@ class StaffGraphicTool(GraphicTool):
 
 
 class MusicNoteGraphicTool(GraphicTool):
-    def create_graphic(self) -> Graphic:
-        raise NotImplementedError()
+    ...
 
 
-class WholeNoteGraphicTool(GraphicTool):
+class WholeNoteGraphicTool(MusicNoteGraphicTool):
     def create_graphic(self) -> Graphic:
         return WholeNote()
 
 
-class HalfNoteGraphicTool(GraphicTool):
+class HalfNoteGraphicTool(MusicNoteGraphicTool):
     def create_graphic(self) -> Graphic:
         return HalfNote()
 
