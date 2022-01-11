@@ -14,7 +14,7 @@ class Graphic(QtWidgets.QGraphicsItemGroup):
     ):
         super().__init__(parent)
 
-        self.debug = True
+        self.debug = False
 
         self.reuse_svg_renderers(old_graphic)
 
