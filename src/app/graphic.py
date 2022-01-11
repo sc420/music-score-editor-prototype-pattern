@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Any, cast, Dict, List, Optional
 import math
 
-from PySide2 import QtCore, QtSvg, QtWidgets
+from PySide2 import QtCore, QtGui, QtSvg, QtWidgets
 
 
 class Graphic(QtWidgets.QGraphicsItemGroup):
@@ -13,6 +13,8 @@ class Graphic(QtWidgets.QGraphicsItemGroup):
         old_graphic: Optional[Graphic] = None,
     ):
         super().__init__(parent)
+
+        self.debug = True
 
         self.reuse_svg_renderers(old_graphic)
 
@@ -48,6 +50,23 @@ class Graphic(QtWidgets.QGraphicsItemGroup):
         children = self.create_children()
         for child in children:
             self.addToGroup(child)
+
+        if self.debug:
+            self.add_debug_rectangles(children)
+
+    def add_debug_rectangles(self, children: List[QtWidgets.QGraphicsItem]):
+        for child in children:
+            child_rect = child.sceneBoundingRect()
+            child_rect.adjust(-3, -3, 3, 3)  # Inflate a little bit
+            highlight_rect = QtWidgets.QGraphicsRectItem(child_rect)
+            highlight_rect.setPen(QtGui.QPen(QtCore.Qt.red))
+            self.addToGroup(highlight_rect)
+
+        group_rect = self.sceneBoundingRect()
+        group_rect.adjust(-3, -3, 3, 3)  # Inflate a little bit
+        highlight_rect = QtWidgets.QGraphicsRectItem(group_rect)
+        highlight_rect.setPen(QtGui.QPen(QtCore.Qt.blue))
+        self.addToGroup(highlight_rect)
 
     def init_flags(self):
         self.setFlag(QtWidgets.QGraphicsItem.ItemIsMovable, True)
@@ -269,7 +288,8 @@ class WholeNote(MusicalNote):
 
     def create_children(self) -> List[QtWidgets.QGraphicsItem]:
         items = [
-            self.find_or_create_svg_item(":/graphics_view/icons/whole_note.svg")
+            self.find_or_create_svg_item(
+                ":/graphics_view/icons/whole_note.svg")
         ]
         return items
 
